@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,10 +27,10 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
 
 
     //metodo usado para substituir lista de endpoints e deixar metodo mais limpo.
-   private static final String[] ENDPOINT_POST_PUBLICO = {
-           "/leads",
-           "/usuario"
-   };
+    private static final String[] ENDPOINT_POST_PUBLICO = {
+            "/leads",
+            "/usuario"
+    };
 
 
     @Override
@@ -42,13 +43,14 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, ENDPOINT_POST_PUBLICO).permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//não salva a sessão do usuario.
+        //carrega via token e é mais seguro em alguns momentos.
     }
 
     //confiração de rota de dominio - de qual dominio ele pode receber requisições do front.
     //Ele deve ser um Bean
     //"/** = qualquer dominio
     @Bean
-    CorsConfigurationSource confirgurarCORS(){
+    CorsConfigurationSource confirgurarCORS() {
 
         UrlBasedCorsConfigurationSource cors = new UrlBasedCorsConfigurationSource();
         cors.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
@@ -56,5 +58,10 @@ public class ConfiguracaoDeSeguranca extends WebSecurityConfigurerAdapter {
 
         //a string pattern não pode ser um array como metodo acima, não recebe no lugar do dominio.
         //cors = cross origin = sincronizar a origem das requisções
+    }
+
+    @Bean //faz parte do metodo de criptografia de senha
+    private BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
