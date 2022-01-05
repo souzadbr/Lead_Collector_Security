@@ -2,6 +2,8 @@ package br.com.zup.LeadCollector.config.security;
 
 import br.com.zup.LeadCollector.usuario.Usuario;
 import br.com.zup.LeadCollector.usuario.UsuarioRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,4 +29,6 @@ public class UsuarioLoginService implements UserDetailsService {
 
         return new UsuarioLogado(usuario.getId(),usuario.getEmail(), usuario.getSenha());
     }
+
+
 }

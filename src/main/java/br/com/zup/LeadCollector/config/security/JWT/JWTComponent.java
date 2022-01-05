@@ -1,6 +1,8 @@
 package br.com.zup.LeadCollector.config.security.JWT;
 
 
+import br.com.zup.LeadCollector.config.security.JWT.excepetion.TokenInvalidoException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,5 +27,16 @@ public class JWTComponent {
                 .signWith(SignatureAlgorithm.HS512,segredo.getBytes()).compact();
 
         return token;
+    }
+    //claims é a informação dentro do token em geral o corpo.
+    public Claims pegarClaims(String token){
+        try{
+            Claims claims = Jwts.parser().setSigningKey(segredo.getBytes()).parseClaimsJws(token).getBody();
+            //essa linha descriptografa o token
+            //parser = ele descritografa o token e transforma em uma clase descriptografada para gerar os claims
+            return claims;
+        }catch (Exception exception){
+            throw new TokenInvalidoException();
+        }
     }
 }
