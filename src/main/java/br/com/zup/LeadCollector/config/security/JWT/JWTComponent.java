@@ -14,9 +14,9 @@ import java.util.UUID;
 
 @Component
 public class JWTComponent {
-    @Value("${jwt.segrego}")
+    @Value("${jwt.segredo}")
     private String segredo; //tem que ficar escondido
-    @Value("${jwt.milisegundo}")
+    @Value("${jwt.milissegundo}")
     private Long milissegundo;
 
     public String gerarToken(String username, UUID id){
