@@ -16,4 +16,11 @@ public class LeadService {
         return leadRepository.findAll();
     }
 
+    public Lead atualizaLead(Lead lead){
+        return leadRepository.save(lead);
+    }
+
+    public void deletarLead(String email){
+        leadRepository.deleteById(email);
+    }
 }
