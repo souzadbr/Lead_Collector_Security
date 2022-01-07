@@ -1,8 +1,10 @@
 package br.com.zup.LeadCollector.usuario;
 
+import br.com.zup.LeadCollector.config.security.UsuarioLogado;
 import br.com.zup.LeadCollector.usuario.dtos.CadastroUsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,12 +16,17 @@ public class UsuarioController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario cadastrarUsuario(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO){
+    public void cadastrarUsuario(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO){
         Usuario usuario = new Usuario();
         usuario.setEmail(cadastroUsuarioDTO.getEmail());
         usuario.setSenha(cadastroUsuarioDTO.getSenha());
 
-        return usuarioService.salvarUsuario(usuario);
+        usuarioService.salvarUsuario(usuario);
     }
 
+    @PutMapping
+    public void atualizarUsuario(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO, Authentication authentication){
+        UsuarioLogado usuarioLogado = (UsuarioLogado) authentication.getPrincipal();
+        System.out.println(usuarioLogado.getId());
+    }
 }
