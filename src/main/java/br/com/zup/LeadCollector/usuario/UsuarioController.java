@@ -27,6 +27,11 @@ public class UsuarioController {
     @PutMapping
     public void atualizarUsuario(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO, Authentication authentication){
         UsuarioLogado usuarioLogado = (UsuarioLogado) authentication.getPrincipal();
-        System.out.println(usuarioLogado.getId());
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail(cadastroUsuarioDTO.getEmail());
+        usuario.setSenha(cadastroUsuarioDTO.getSenha());
+
+        usuarioService.atualizarUsuario(usuario, usuarioLogado.getId());
     }
 }
