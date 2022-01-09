@@ -56,6 +56,7 @@ public class FiltroDeAutorizacaoJWT extends BasicAuthenticationFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }catch(TokenInvalidoException exception){
                response.sendError(HttpStatus.FORBIDDEN.value());
+               response.setStatus(HttpStatus.FORBIDDEN.value());
             }
         }
         chain.doFilter(request, response);
